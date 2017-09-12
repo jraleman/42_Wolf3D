@@ -1,0 +1,54 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: jaleman <jaleman@student.42.us.org>        +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2016/11/03 23:46:05 by jaleman           #+#    #+#              #
+#    Updated: 2016/11/03 23:46:08 by jaleman          ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
+NAME    := libft.a
+
+INC_DIR := includes
+SRC_DIR := srcs
+OBJ_DIR := objs
+
+INCLS   := $(INC_DIR)
+SRCS    := ft_degrees_to_angle.c ft_itoa.c ft_nbrlen.c ft_putendl.c \
+			ft_puterror.c ft_strcat.c ft_strcpy.c ft_strdup.c ft_strjoin.c \
+			ft_strlen.c
+OBJS    := $(SRCS:%.c=$(OBJ_DIR)/%.o)
+
+CC      := gcc
+CFLAGS  += -Wall -Wextra -Werror
+LFLAGS  += -I.
+AR      := ar rc
+RLIB    := ranlib
+
+all:	obj $(NAME)
+
+obj:
+		@mkdir -p $(OBJ_DIR)
+
+$(NAME): $(OBJS)
+		@$(AR) $(NAME) $(OBJS)
+		@$(RLIB) $(NAME)
+		@echo "[INFO] $(NAME) created!"
+
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+		$(CC) $(CFLAGS) -c $< -o $@ $(LFLAGS)/$(INCLS)
+
+clean:
+		@rm -rf $(OBJS) $(OBJ_DIR)
+		@echo "[INFO] Objects removed!"
+
+fclean: clean
+		@rm -rf $(NAME) $(LIB_DIR)
+		@echo "[INFO] Library [$(NAME)] removed!"
+
+re:		fclean all
+
+.PHONY:	all clean fclean re
